@@ -1,20 +1,23 @@
 gpu_id: 0
-load_meshhead_checkpoint: 'checkpoints/meshhead_NeRSemble031/meshhead_latest'
+load_csi_prediction_checkpoint: 'checkpoints/Umi_outdoor30/csi_prediction_latest'
 load_gaussianhead_checkpoint: 'checkpoints/gaussianhead_NeRSemble031/gaussianhead_latest'
 load_supres_checkpoint: 'checkpoints/gaussianhead_NeRSemble031/supres_latest'
 load_delta_poses_checkpoint: 'checkpoints/gaussianhead_NeRSemble031/delta_poses_latest'
 lr_net: 1e-4
 lr_pose: 1e-5
-batch_size: 1
+batch_size: 4
 optimize_pose: True
 
 dataset:
-  dataroot: 'mini_demo_dataset/031'
-  camera_ids: ['220700191', '221501007', '222200036', '222200037', '222200038', '222200039', '222200040', '222200041',
-               '222200042', '222200043', '222200044', '222200045', '222200046', '222200047', '222200048', '222200049']
-  original_resolution: 2048
-  resolution: 2048
-
+  total_data: False
+  data_split_flag: True
+  data_split: '8:2:0'
+  dataroot: 'dataset'
+  dataroot_x: 'dataset/Umi_outdoor30_1_6_11_16(5).mat'
+  dataroot_y: 'dataset/Umi_outdoor30_21(5).mat'
+  
+module:
+  name: 'ConvLSTM'
 meshheadmodule:
   geo_mlp: [27, 256, 256, 256, 256, 256, 132]
   exp_color_mlp: [192, 256, 256, 32]

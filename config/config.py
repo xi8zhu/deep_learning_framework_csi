@@ -25,8 +25,9 @@ class config_train(config_base):
 
     def __init__(self):
         super(config_train, self).__init__()
-
         self.cfg.gpu_id = 0                                     # which gpu is used
+        self.cfg.load_csi_prediction_checkpoint = ''            # checkpoint path of csi prediction 
+
         self.cfg.load_meshhead_checkpoint = ''                  # checkpoint path of mesh head
         self.cfg.load_gaussianhead_checkpoint = ''              # checkpoint path of gaussian head
         self.cfg.load_supres_checkpoint = ''                    # checkpoint path of super resolution network
@@ -38,12 +39,16 @@ class config_train(config_base):
         self.cfg.optimize_pose = False                          # optimize delta_poses or not
         
         self.cfg.dataset = CN()
+        self.cfg.dataset.total_data = False
+        self.cfg.dataset.data_split_flag = True
+        self.cfg.dataset.data_split = ''
         self.cfg.dataset.dataroot = ''                          # root of the dataset
-        self.cfg.dataset.camera_ids = []                        # which cameras are used
-        self.cfg.dataset.original_resolution = 2048             # original image resolution, should match the intrinsic
-        self.cfg.dataset.resolution = 512                       # image resolution for rendering
-        self.cfg.dataset.num_sample_view = 8                    # number of sampled images from different views during mesh head training
+        self.cfg.dataset.dataroot_x = '' 
+        self.cfg.dataset.dataroot_y = '' 
         
+        self.cfg.module = CN()
+        self.cfg.module.name = ''
+
         self.cfg.meshheadmodule = CN()
         self.cfg.meshheadmodule.geo_mlp = []                    # dimensions of geometry MLP
         self.cfg.meshheadmodule.exp_color_mlp = []              # dimensions of expression color MLP
