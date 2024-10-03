@@ -27,14 +27,13 @@ class config_train(config_base):
         super(config_train, self).__init__()
         self.cfg.gpu_id = 0                                     # which gpu is used
         self.cfg.load_csi_prediction_checkpoint = ''            # checkpoint path of csi prediction 
+        self.cfg.train_epoch = 0
 
         self.cfg.load_meshhead_checkpoint = ''                  # checkpoint path of mesh head
         self.cfg.load_gaussianhead_checkpoint = ''              # checkpoint path of gaussian head
         self.cfg.load_supres_checkpoint = ''                    # checkpoint path of super resolution network
         self.cfg.load_delta_poses_checkpoint = ''               # checkpoint path of per-frame offset of head pose
         self.cfg.lr_net = 0.0                                   # learning rate for models and networks
-        self.cfg.lr_lmk = 0.0                                   # learning rate for 3D landmarks
-        self.cfg.lr_pose = 0.0                                  # learning rate for delta_poses
         self.cfg.batch_size = 1                                 # recommend batch_size = 1
         self.cfg.optimize_pose = False                          # optimize delta_poses or not
         

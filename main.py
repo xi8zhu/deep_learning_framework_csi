@@ -11,6 +11,7 @@ from program.csi_prediction.dataset.csi_prediction_dataloaderx import my_dataloa
 from program.csi_prediction.tools.data_split_validate import data_split_validate
 from program.csi_prediction.module.csi_prediction_module import choose_module
 from program.csi_prediction.recorder.csi_prediction_recorder import convlstm_recorder as Recorder
+from program.csi_prediction.trainer.csi_prediction_trainer import convlstm_trainer as Trainer
 from torch.utils.data import random_split
 
 
@@ -47,8 +48,8 @@ if __name__ == '__main__':
     #     model.pre_train(300, device)
     recorder = Recorder(cfg.recorder)
 
-    optimizer = torch.optim.Adam()
-    trainer = trainer(train_dataloader, model, optimizer, recorder, cfg.gpu_id)
-    trainer.train(0, 50)
-    tester = tester(train_dataloader, model, optimizer, recorder, cfg.gpu_id)
-    tester.test(0, 50)
+    optimizer = torch.optim.Adam([{'params':model.parameters(), 'lr' : cfg.lr_net}])
+    trainer = Trainer(train_dataloader, model, optimizer, recorder, cfg.gpu_id, cfg)
+    trainer.train(0, cfg.train_epoch)
+    # tester = Tester(test_dataloader, model, optimizer, recorder, cfg.gpu_id, cfg)
+    # tester.test(0, 50)
