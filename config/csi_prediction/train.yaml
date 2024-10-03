@@ -2,8 +2,7 @@ gpu_id: 0
 load_csi_prediction_checkpoint: 'checkpoints/Umi_outdoor30/csi_prediction_latest'
 lr_net: 1e-4
 batch_size: 1024
-train_epoch: 10
-optimize_pose: True
+train_epoch: 3
 
 dataset:
   total_data: False
@@ -21,5 +20,4 @@ recorder:
   name: 'csi_prediction'
   logdir: 'log/csi_prediction'
   checkpoint_path: 'checkpoints'
-  result_path: 'results'
-  save_freq: 50
+  save_freq: 10

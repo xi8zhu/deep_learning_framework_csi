@@ -12,7 +12,6 @@ class convlstm_recorder():
 
         self.name = cfg.name
         self.checkpoint_path = cfg.checkpoint_path
-        self.result_path = cfg.result_path
         
         self.save_freq = cfg.save_freq
         self.show_freq = cfg.show_freq
