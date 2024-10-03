@@ -9,6 +9,11 @@
 
 ### 程序运行说明
 + program中为程序的大部分细节文件
++ 创建环境
+```
+conda env create -f environment.yaml
+```
+
 ```
 python main.py --config config/csi_prediction/train.yaml
 ```
