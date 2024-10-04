@@ -1,5 +1,7 @@
 import sys
 sys.path.append('./program/csi_prediction/module/')
+sys.path.append('./program/csi_prediction/trainer/')
+
 # print(sys.path)
 
 import os

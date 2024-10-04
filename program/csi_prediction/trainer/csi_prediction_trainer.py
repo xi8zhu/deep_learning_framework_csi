@@ -1,7 +1,7 @@
 import torch
 from tqdm import tqdm
 from torch import nn
-
+from cal_sgcs import fun_cal_sgcs
 
 
 
@@ -17,8 +17,7 @@ class convlstm_trainer():
     def train(self, start_epoch=0, epochs=1):
         self.model.train()
         for epoch in range(start_epoch, epochs):
-            for idx, (inputs, targets) in tqdm(enumerate(self.dataloader)):
-                loss_function = nn.MSELoss()
+            for idx, (inputs, targets) in tqdm(enumerate(self.dataloader)): 
 
                 batch_size_now,_,_,_,_,_ = inputs.shape
 
@@ -31,9 +30,16 @@ class convlstm_trainer():
                 x = x.to(device=self.device)
                 y = y.to(device=self.device)
                 y_pred = self.model(x)
-                l2_lambda = 0.0001
-                l2_norm = sum(p.pow(2.0).sum() for p in self.model.parameters()) 
-                loss = 1 - loss_function(y_pred, y) + l2_lambda * l2_norm
+
+                l2_lambda = 0.05
+                mse_lambda = 0.5
+                sgcs_lambda = 0.5
+                loss_l2_norm = sum(p.pow(2.0).sum() for p in self.model.parameters()) 
+                fun_mse = nn.MSELoss()
+                loss_mse = fun_mse(y, y_pred)
+                loss_sgcs = fun_cal_sgcs(y, y_pred)
+
+                loss = mse_lambda * (1 - loss_sgcs) + sgcs_lambda * loss_mse + l2_lambda * loss_l2_norm
                 self.optimizer.zero_grad()
                 loss.backward()
                 self.optimizer.step()
@@ -42,6 +48,9 @@ class convlstm_trainer():
                     'iter' : idx + epoch * len(self.dataloader),
                     'model': self.model, 
                     'loss': loss,
+                    'loss_sgcs':(1 - loss_sgcs), 
+                    'loss_mse':loss_mse, 
+                    'loss_l2_norm':loss_l2_norm, 
                     'cfg': self.total_cfg,
                     'epoch':epoch
                 }
