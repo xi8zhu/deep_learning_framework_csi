@@ -22,6 +22,9 @@ class convlstm_recorder():
     
     def log(self, log_data):
         self.logger.add_scalar('loss', log_data['loss'], log_data['iter'])
+        self.logger.add_scalar('loss_sgcs', log_data['loss_sgcs'], log_data['iter'])
+        self.logger.add_scalar('loss_mse', log_data['loss_mse'], log_data['iter'])
+        self.logger.add_scalar('loss_l2_norm', log_data['loss_l2_norm'], log_data['iter'])
 
         if log_data['iter'] % self.save_freq == 0:
             print('saving checkpoint.')
