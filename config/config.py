@@ -48,6 +48,7 @@ class config_train(config_base):
         self.cfg.recorder.logdir = ''                           # directory of the tensorboard log
         self.cfg.recorder.checkpoint_path = ''                  # path to the saved checkpoints
         self.cfg.recorder.save_freq = 1                         # how often the checkpoints are saved
-        self.cfg.recorder.show_freq = 1                         # how often the visualization results are saved
+        self.cfg.recorder.comment = '' 
+        self.cfg.recorder.save_total_cfg = False
 
 

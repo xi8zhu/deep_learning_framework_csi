@@ -15,9 +15,10 @@ dataset:
 module:
   name: 'ConvLSTM'
 
-
 recorder:
   name: 'csi_prediction'
   logdir: 'log/csi_prediction'
   checkpoint_path: 'checkpoints'
+  comment: ''
+  save_total_cfg: True
   save_freq: 10
