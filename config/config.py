@@ -41,9 +41,14 @@ class config_train(config_base):
         self.cfg.dataset.dataroot_y = '' 
         
         self.cfg.module = CN()
-        self.cfg.module.name = ''
+        self.cfg.module.model_name = ''
+        self.cfg.module.ConvLSTM = CN()
+        self.cfg.module.ConvLSTM.l2_lambda = 0.01
+        self.cfg.module.ConvLSTM.mse_lambda = 0.01
+        self.cfg.module.ConvLSTM.sgcs_lambda = 0.01
 
         self.cfg.recorder = CN()
+        self.cfg.recorder.only_test = False
         self.cfg.recorder.name = ''                             # name of the avatar
         self.cfg.recorder.logdir = ''                           # directory of the tensorboard log
         self.cfg.recorder.checkpoint_path = ''                  # path to the saved checkpoints
