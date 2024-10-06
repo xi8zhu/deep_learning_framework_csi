@@ -28,11 +28,12 @@ class config_train(config_base):
         self.cfg.gpu_id = 0                                     # which gpu is used
         self.cfg.load_csi_prediction_checkpoint = ''            # checkpoint path of csi prediction 
         self.cfg.train_epoch = 0
-        
+        self.cfg.only_test = False
+
         self.cfg.lr_net = 0.0                                   # learning rate for models and networks
-        self.cfg.batch_size = 1                                 # recommend batch_size = 1
         
         self.cfg.dataset = CN()
+        self.cfg.dataset.batch_size = 1                                 # recommend batch_size = 1
         self.cfg.dataset.total_data = False
         self.cfg.dataset.data_split_flag = True
         self.cfg.dataset.data_split = ''
@@ -48,10 +49,10 @@ class config_train(config_base):
         self.cfg.module.ConvLSTM.sgcs_lambda = 0.01
 
         self.cfg.recorder = CN()
-        self.cfg.recorder.only_test = False
         self.cfg.recorder.name = ''                             # name of the avatar
         self.cfg.recorder.logdir = ''                           # directory of the tensorboard log
         self.cfg.recorder.checkpoint_path = ''                  # path to the saved checkpoints
+        self.cfg.recorder.result_path = ''
         self.cfg.recorder.save_freq = 1                         # how often the checkpoints are saved
         self.cfg.recorder.comment = '' 
         self.cfg.recorder.save_total_cfg = False

@@ -1,11 +1,12 @@
 gpu_id: 1
 load_csi_prediction_checkpoint: 'checkpoints/Umi_outdoor30/csi_prediction_latest'
 lr_net: 1e-4
-batch_size: 1024
 train_epoch: 300
+only_test: False
 
 dataset:
-  total_data: False
+  batch_size: 1140
+  total_data: True
   data_split_flag: True
   data_split: '9:1:0'
   dataroot: 'dataset'
@@ -15,15 +16,15 @@ dataset:
 module:
   model_name: 'ConvLSTM'
   ConvLSTM:
-    l2_lambda : 0.05
-    mse_lambda : 0.5
-    sgcs_lambda : 0.5
+    l2_lambda : 0.0
+    mse_lambda : 1.0
+    sgcs_lambda : 1.0
 
 recorder:
-  only_test: False
   name: 'csi_prediction'
   logdir: 'log/csi_prediction'
   checkpoint_path: 'checkpoints'
-  comment: 'addtest'
+  result_path: 'results'
+  comment: 'test'
   save_total_cfg: True
-  save_freq: 1000
+  save_freq: 2000
