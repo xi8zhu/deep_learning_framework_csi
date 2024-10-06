@@ -24,4 +24,4 @@ tensorboard --logdir log/csi_prediction
 ### 输出结果说明
 + log：tensorboard保存结果
 + checkpoints: 模型参数文件
-+ runs:模型参数，测试用到，训练模型未使用（用log替代了）
++ results:输出模型的配置，模型的各种测试结果并打印了一份模型
