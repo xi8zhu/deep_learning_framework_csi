@@ -51,8 +51,8 @@ class convlstm():
         return x, y
 
     def train(self, start_epoch=0, epochs=1):
-        self.model.train()
         for epoch in range(start_epoch, epochs):
+            self.model.train()
             sum_loss = {
                 "loss" : 0,
                 "loss_mse" : 0,

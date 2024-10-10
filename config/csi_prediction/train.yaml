@@ -1,4 +1,4 @@
-gpu_id: 1
+gpu_id: 0
 load_csi_prediction_checkpoint: 'checkpoints/Umi_outdoor30/csi_prediction_latest'
 lr_net: 1e-4
 train_epoch: 300
@@ -8,7 +8,7 @@ dataset:
   batch_size: 1140
   total_data: True
   data_split_flag: True
-  data_split: '9:1:0'
+  data_split: '7:3:0'
   dataroot: 'dataset'
   dataroot_x: 'dataset/Umi_outdoor30_1_6_11_16(5).mat'
   dataroot_y: 'dataset/Umi_outdoor30_21(5).mat'
@@ -25,6 +25,6 @@ recorder:
   logdir: 'log/csi_prediction'
   checkpoint_path: 'checkpoints'
   result_path: 'results'
-  comment: 'test'
+  comment: 'debug'
   save_total_cfg: True
   save_freq: 2000
