@@ -1,17 +1,17 @@
 gpu_id: 0
 load_csi_prediction_checkpoint: 'checkpoints/Umi_outdoor30/csi_prediction_latest'
 lr_net: 1e-4
-train_epoch: 300
-only_test: False
+train_epoch: 3
+only_test: True
 
 dataset:
   batch_size: 1140
-  total_data: True
+  total_data: False
   data_split_flag: True
-  data_split: '7:3:0'
+  data_split: '8::0'
   dataroot: 'dataset'
-  dataroot_x: 'dataset/Umi_outdoor30_1_6_11_16(5).mat'
-  dataroot_y: 'dataset/Umi_outdoor30_21(5).mat'
+  dataroot_x: '/data/lzh/Umi_outdoor30_1_6_11_16(5).mat'
+  dataroot_y: '/data/lzh/Umi_outdoor30_21(5).mat'
 
 module:
   model_name: 'ConvLSTM'
@@ -27,4 +27,4 @@ recorder:
   result_path: 'results'
   comment: 'debug'
   save_total_cfg: True
-  save_freq: 2000
+  save_freq: 200

@@ -23,7 +23,6 @@
                 "--config",
                 "config/program1/train.yaml"
             ],
-            "cwd": "C://my_data//BUPT//Program//deep_learning"
         }
     ]
 }
