@@ -1,7 +1,7 @@
 # .gitignore
-dataset/
-runs/
-checkpoints/
-log/
-results/
-code_test/
+/dataset/
+/runs/
+/checkpoints/
+/log/
+/results/
+/code_test/
