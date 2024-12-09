@@ -29,9 +29,8 @@ class convlstm_recorder():
 
         self.save_freq = cfg.save_freq
         self.only_test = only_test
-        if not self.only_test:
-            os.makedirs(self.checkpoint_path, exist_ok=True)
-            os.makedirs('%s/%s' % (self.checkpoint_path, self.file_name), exist_ok=True)
+        os.makedirs(self.checkpoint_path, exist_ok=True)
+        os.makedirs('%s/%s' % (self.checkpoint_path, self.file_name), exist_ok=True)
         os.makedirs(self.result_path, exist_ok=True)
         os.makedirs('%s/%s' % (self.result_path, self.file_name), exist_ok=True)
 

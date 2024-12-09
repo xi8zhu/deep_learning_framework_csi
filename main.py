@@ -45,5 +45,5 @@ if __name__ == '__main__':
     all_model = Model(dataset, model, optimizer, recorder, cfg.gpu_id, cfg)
     all_model.train(0, cfg.train_epoch)
     # 设计时，不在train方法里加config，原因是希望经过不同模型选择后实例化的trainer拥有共性参数...这样写估计以后听不懂
-    if cfg.only_test:
-        all_model.last_test()
+    # if cfg.only_test:
+    #     all_model.last_test(dataset)

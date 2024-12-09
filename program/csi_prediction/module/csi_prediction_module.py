@@ -18,3 +18,6 @@ def choose_module(cfg):
         import LSTM
     elif model_name == 'CNN':
         import CNN
+    elif model_name == 'transLSTM':
+        from transLSTM import mytransLSTM
+        return mytransLSTM()

@@ -13,7 +13,7 @@
             "justMyCode": false
         },
         {
-            "name": "Python: main.py --config config/program1/train.yaml",
+            "name": "normal debugger csiprediction",
             "type": "debugpy",
             "request": "launch",
             "program": "main.py",
@@ -21,7 +21,7 @@
             "console": "integratedTerminal",
             "args": [
                 "--config",
-                "config/program1/train.yaml"
+                "config/csi_prediction/train.yaml"
             ],
         }
     ]
