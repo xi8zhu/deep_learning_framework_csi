@@ -3,7 +3,7 @@ import torch.nn as nn
 from torch import Tensor
 import torch.nn.functional as F
 import h5py
-
+import argparse
 
 
 def fun_cal_sgcs(y_true, y_pred):
@@ -54,14 +54,21 @@ class class_cal_sgcs(nn.Module):
 
 if __name__ == '__main__':
     print("hello world!")
-    y = h5py.File('dataset/Umi_outdoor30_21(5).mat', 'r')
-    y = y['result_21']
-    y = torch.from_numpy(y[...,:50]).float()
-    y = y.permute(5, 4, 3, 2, 1, 0)
-    y = y[:, 0, ...]
-    batch_size_now, _, _, _, _ = y.shape
-    y = y.reshape(batch_size_now, 12, 32, 4)
-    y = y.permute(0, 3, 1, 2)
-    y1 = y[..., :] - 1
-    a = fun_cal_sgcs(y, y1)
-    print(a)
+    debug_data = True
+    if debug_data:
+        
+        parser = argparse.ArgumentParser()
+        parser.add_argument('--dataset', type=str, default='/data/lzh/Umi_outdoor30_21(5).mat')
+        arg = parser.parse_args()
+        dataset_path = arg.dataset
+        y = h5py.File(dataset_path, 'r')
+        y = y['result_21']
+        y = torch.from_numpy(y[...,:50]).float()
+        y = y.permute(5, 4, 3, 2, 1, 0)
+        y = y[:, 0, ...]
+        batch_size_now, _, _, _, _ = y.shape
+        y = y.reshape(batch_size_now, 12, 32, 4)
+        y = y.permute(0, 3, 1, 2)
+        y1 = y[..., :] - 1
+        a = fun_cal_sgcs(y, y1)
+        print(a)

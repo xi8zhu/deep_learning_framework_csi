@@ -6,6 +6,21 @@
 + 对不同的训练提供不同的测试
 + 添加学习率衰减
 + 添加多线程
+### 数据规范
+在CSI任务中, 一般出现的数据维度为
+```
+(Batch_size, time_slots, subcarrier, tx, rx, real_imag)
+```
++ 对于CSI反馈任务, 
+  + 通常使用一根接收天线或特征向量反馈时, 数据维度为(Batch_size, time_slots, subcarrier, tx, real_imag)
+  + 若不考虑时间相关性, 数据维度为(Batch_size,  subcarrier, tx, rx, real_imag)
+  + 若二者均不考虑,则(Batch_size,  subcarrier, tx, real_imag)
++ 对于transformer模型, 会将维度flatten,得(Batch_size,  subcarrier * tx * real_imag)
++ 对于CNN相关的模型, 把subcarrier与tx看作图像的高和宽, 将数据重构为:
+```
+(Batch_size, real_imag * rx, subcarrier, tx): channel coeffients
+(Batch_size, channel, height, width): image
+```
 ### 程序运行说明
 + program中为程序的大部分细节文件
 + 创建环境

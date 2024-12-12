@@ -8,7 +8,6 @@ from torch.utils.data import random_split
 from thop import profile
 import time
 
-
 class convlstm():
     def __init__(self, dataset, model, optimizer, recorder, gpu_id, total_cfg):
         self.dataset = dataset
