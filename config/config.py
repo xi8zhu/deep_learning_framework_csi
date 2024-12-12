@@ -56,5 +56,5 @@ class config_train(config_base):
         self.cfg.recorder.save_freq = 1                         # how often the checkpoints are saved
         self.cfg.recorder.comment = '' 
         self.cfg.recorder.save_total_cfg = False
-
+    
 

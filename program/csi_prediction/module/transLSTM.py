@@ -334,12 +334,15 @@ class mytransLSTM(nn.Module):
 
 if __name__ =='__main__':
     debug2 = False
-    input_data = torch.randint(0, 11, (100, 50))
-    print(input_data.shape)
-    model = default_transformer()
-    output = model(input_data)
-    print(output.shape)
+    debug3 = False
+    
     if debug2:
+        input_data = torch.randint(0, 11, (100, 50))
+        print(input_data.shape)
+        model = default_transformer()
+        output = model(input_data)
+        print(output.shape)
+    if debug3:
         rx = 1 #1 or 2
         re_im = 2
         tx = 32
@@ -353,7 +356,6 @@ if __name__ =='__main__':
         print(input.shape)
         output = embedding(input)
         print(output.shape)
-
 
         # Create model
         model = make_model(vocab_num, vocab_num)

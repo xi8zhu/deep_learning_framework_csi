@@ -29,3 +29,9 @@ embedding_dim (int) – the size of each embedding vector -embedding后的词向
 + 基于上述输入, 把L个单词embedding成 embedding_dim维度的词向量
 ![alt text](asset/image-1.png)
 
+#### 在子类调用父类函数的两种办法
++ 把父类的函数定义为静态方法@staticmethod,这样的定义不依赖于实例的数据,访问更加随意
++ 父类的函数绑定self,子类调用时self.function
+  + 但是!子类不能直接访问父类的私有方法
+#### python方法命名的不同意义
+![alt text](asset/image-2.png)

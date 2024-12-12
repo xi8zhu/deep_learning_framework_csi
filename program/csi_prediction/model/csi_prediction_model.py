@@ -8,25 +8,21 @@ from torch.utils.data import random_split
 from thop import profile
 import time
 
-class convlstm():
+class basemodel():
     def __init__(self, dataset, model, optimizer, recorder, gpu_id, total_cfg):
         self.dataset = dataset
         self.data_split_flag = total_cfg.dataset.data_split_flag
         self.batch_size = total_cfg.dataset.batch_size
+        self.model = model
         if self.data_split_flag:
-            self.dataloader, self.test_dataloader = self.__load_split_dataset(dataset, total_cfg.dataset)
+            self.dataloader, self.test_dataloader = self._load_split_dataset(dataset, total_cfg.dataset)
         else:
             self.dataloader = my_dataloaderx(dataset, batch_size = self.batch_size, shuffle=True)
-        self.model = model
         self.optimizer = optimizer
         self.recorder = recorder
         self.device = torch.device('cuda:%d' % gpu_id)
         self.total_cfg = total_cfg
-        self.l2_lambda = total_cfg.module.ConvLSTM.l2_lambda
-        self.mse_lambda = total_cfg.module.ConvLSTM.mse_lambda
-        self.sgcs_lambda = total_cfg.module.ConvLSTM.sgcs_lambda
-
-    def __load_split_dataset(self, dataset, cfg):
+    def _load_split_dataset(self, dataset, cfg):
         split_array = data_split_validate(cfg.data_split)
         train_dataset, test_dataset, _ = random_split(dataset, split_array)
         # validation dataset is temporily not used! And we can ignore the warnings.
@@ -34,8 +30,7 @@ class convlstm():
         test_dataloader = my_dataloaderx(test_dataset, batch_size=cfg.batch_size, shuffle=True)
         return train_dataloader, test_dataloader
 
-
-    def __process_data_for_model(self, inputs, targets, device):
+    def _process_data_for_model(self, inputs, targets, device):
         batch_size_now = inputs.shape[0]
 
         data_x = inputs.reshape(batch_size_now, 4, 12, 32, 4)
@@ -49,7 +44,11 @@ class convlstm():
 
         return x, y
 
+class convlstm(basemodel):
     def train(self, start_epoch=0, epochs=1):
+        self.l2_lambda = self.total_cfg.module.ConvLSTM.l2_lambda
+        self.mse_lambda = self.total_cfg.module.ConvLSTM.mse_lambda
+        self.sgcs_lambda = self.total_cfg.module.ConvLSTM.sgcs_lambda
         for epoch in range(start_epoch, epochs):
             self.model.train()
             sum_loss = {
@@ -59,7 +58,7 @@ class convlstm():
             }
             for idx, (inputs, targets) in tqdm(enumerate(self.dataloader)): 
                 batch_size = inputs.shape[0]
-                x, y = self.__process_data_for_model(inputs, targets, self.device)
+                x, y = self._process_data_for_model(inputs, targets, self.device)
                 y_pred = self.model(x)
 
                 l2_lambda = self.l2_lambda
@@ -127,7 +126,7 @@ class convlstm():
             test_length = len(test_dataloader)
             for idx, (inputs, targets) in tqdm(enumerate(test_dataloader)): 
                 batch_size = inputs.shape[0]
-                x, y = self.__process_data_for_model(inputs, targets, self.device)
+                x, y = self._process_data_for_model(inputs, targets, self.device)
                 y_pred = self.model(x)
 
                 fun_mse = nn.MSELoss()
@@ -206,3 +205,6 @@ class convlstm():
                     'params': " % .4fM"% (params / 1000000)
                 }
             self.recorder.result_log(log)
+class TransLSTM(basemodel):
+    def train(self, start_epoch=0, epochs=1):
+        pass

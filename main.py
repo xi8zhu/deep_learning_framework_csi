@@ -15,7 +15,7 @@ from program.csi_prediction.model.csi_prediction_model import convlstm as Model
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--config', type=str, default='config/csi_prediction/train.yaml')
+    parser.add_argument('--config', type=str, default='config/csi_prediction/ConvLSTM_test.yaml')
     arg = parser.parse_args()
 
     cfg = config_train()
