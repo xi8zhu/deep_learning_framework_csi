@@ -2,7 +2,11 @@ import torch.nn as nn
 import torch
 from module_ConvLSTM import ConvLSTM
 from torch.nn.functional import log_softmax, pad
-
+import altair as alt
+import copy
+import math
+import pandas as pd
+import numpy as np
 class EncoderDecoder(nn.Module):
     """
     A standard Encoder-Decoder architecture. Base for this and many
@@ -309,39 +313,61 @@ def run_tests():
     for _ in range(10):
         inference_test()
 
-
+class default_transformer(nn.Module):
+    def __init__(self, vocab = 768, N = 6, d_model = 512, d_ff = 2048, h = 8, dropout = 0.1):
+        super(default_transformer, self).__init__()
+        self.model = make_model(vocab, vocab, N, d_model, d_ff, h, dropout)
+    def forward(self, src):
+        ys = torch.zeros(1, 1).type_as(src)
+        tgt_mask = subsequent_mask(ys.size(1)).type_as(src.data)
+        output = self.model(src, src, None, tgt_mask)
+        return output
+    
 
 class mytransLSTM(nn.Module):
     def __init__(self):
         super(mytransLSTM, self).__init__()
-        # B, T, C, H, W
-        # CNN part for feature extraction
-        self.conlstm1 = ConvLSTM(4, 64, (3,3), 1, True, True, False)
-        self.conlstm2 = ConvLSTM(64, 128, (5,5), 1, True, True, False)
-        self.cnn1 = nn.Conv2d(128,128,3, stride=2, padding=1)
-        self.cnn2 = nn.Conv2d(128,64,3, stride=2, padding=1)
-        self.cnn3 = nn.Conv2d(64,64,3, stride=1, padding=1)
-        self.flatten = nn.Flatten() # Flatten the output of CNN
-        # Decoder: Fully connected layer
-        self.decoder = nn.Linear(1536, 4*12*32) # Output size corresponds to the flattened frame
+        pass
 
     def forward(self, x):
-        batch_size, seq_len, C, H, W = x.size()
-        a,_ = self.conlstm1(x)
-        b,_ = self.conlstm2(a[0])
-        c = self.cnn1(b[0][:,-1,:,:,:])
-        d = self.cnn2(c)
-        e = self.cnn3(d)
-        f = self.flatten(e)
-        g = self.decoder(f)
-        return g.contiguous().view(batch_size, 4, 12, 32) # Reshape back to image dimensions
+        pass
 
 if __name__ =='__main__':
-    # Create model
-    model = MyConvLSTM()
-
-    # Example input
-    input_data = torch.randn(8, 4, 4, 12, 32)  # Batch size of 8
+    debug2 = False
+    input_data = torch.randint(0, 11, (100, 50))
     print(input_data.shape)
+    model = default_transformer()
     output = model(input_data)
-    print(output.shape)  # Should print (8, 4, 12, 32)
+    print(output.shape)
+    if debug2:
+        rx = 1 #1 or 2
+        re_im = 2
+        tx = 32
+        sb = 12
+        vocab_num = rx * re_im * tx * sb
+
+        embedding = nn.Embedding(10, 3)
+        # input = torch.LongTensor([[[1, 2, 4, 5], [4, 3, 2, 9]], [[1, 2, 4, 5], [4, 3, 2, 9]]])
+        input = torch.LongTensor([[0.1, 2, 4, 5.456465], [4, 3, 2, 9]])
+
+        print(input.shape)
+        output = embedding(input)
+        print(output.shape)
+
+
+        # Create model
+        model = make_model(vocab_num, vocab_num)
+        batch_size = 1000
+        input_data = torch.randint(0, 11, (100, 50))
+        # src = torch.randint(0, 11, (2, 10, 3)) PositionalEncoding不接受dimension=3 embedding接受的
+        # src = torch.randn(2,10) # nn.embedding 不接受float输入
+        
+        # src_mask = torch.ones(batch_size, )
+        # Example input
+        
+        print(input_data.shape)
+        src = input_data
+        ys = torch.zeros(1, 1).type_as(src)
+        tgt_mask = subsequent_mask(ys.size(1)).type_as(src.data)
+        output = model(input_data, input_data, None, tgt_mask)
+        print(output.shape)  # Should print (8, 4, 12, 32)

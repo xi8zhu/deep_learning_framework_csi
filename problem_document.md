@@ -18,3 +18,6 @@
 + GPT还说增强轮次，那目前来说训练轮次增多会让训练集和测试集的性能无比接近，这是好事！
 https://www.zhihu.com/question/429337764#:~:text=model.trai
 https://www.zhihu.com/question/264677004#:~:text=%E6%AD%A4%E6%97%B6%EF%BC%8C%E6%9C%89%E5%8F%AF%E8%83%BD%E9%AA%8C%E8%AF%81%E9%9B%86%E6%88%96
+
+3.回归任务的embedding应该如何设计?
++ 当一个全连接保证维度相同用?

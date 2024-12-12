@@ -2,7 +2,7 @@
 
 
 
-model_list = ['ConvLSTM']
+model_list = ['ConvLSTM', 'transLSTM']
 def choose_module(cfg):
     """
     input: model name
