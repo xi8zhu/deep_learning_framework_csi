@@ -42,11 +42,29 @@ class config_train(config_base):
         self.cfg.dataset.dataroot_y = '' 
         
         self.cfg.module = CN()
+        self.cfg.module.loss = CN()
+        self.cfg.module.loss.l2_lambda = 0.01
+        self.cfg.module.loss.mse_lambda = 0.01
+        self.cfg.module.loss.sgcs_lambda = 0.01
+
         self.cfg.module.model_name = ''
         self.cfg.module.ConvLSTM = CN()
-        self.cfg.module.ConvLSTM.l2_lambda = 0.01
-        self.cfg.module.ConvLSTM.mse_lambda = 0.01
-        self.cfg.module.ConvLSTM.sgcs_lambda = 0.01
+        self.cfg.module.ConvLSTM.convlstm_layer = 2
+        self.cfg.module.ConvLSTM.CNN_layer = 3
+        self.cfg.module.ConvLSTM.convlstm_input_dim = [4, 64]
+        self.cfg.module.ConvLSTM.convlstm_output_dim = [64, 128]
+        self.cfg.module.ConvLSTM.convlstm_kernel_size = [3, 5]
+        self.cfg.module.ConvLSTM.CNN_input_dim = [128, 128, 64]
+        self.cfg.module.ConvLSTM.CNN_output_dim = [128, 64, 64]
+        self.cfg.module.ConvLSTM.CNN_kernel_size = [3, 3, 3]
+        self.cfg.module.ConvLSTM.CNN_stride = [2, 2, 1]
+
+        self.cfg.module.TransLSTM = CN()
+        self.cfg.module.TransLSTM.layers_num = 6
+        self.cfg.module.TransLSTM.d_model = 512
+        self.cfg.module.TransLSTM.d_ff = 2048
+        self.cfg.module.TransLSTM.h = 8
+        self.cfg.module.TransLSTM.dropout = 0.1
 
         self.cfg.recorder = CN()
         self.cfg.recorder.name = ''                             # name of the avatar

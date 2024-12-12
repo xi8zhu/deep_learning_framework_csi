@@ -7,15 +7,15 @@ import os
 import torch
 import argparse
 from config.config import config_train
-from program.csi_prediction.dataset.csi_prediction_dataset import my_dataset
-from program.csi_prediction.module.csi_prediction_module import choose_module
-from program.csi_prediction.recorder.csi_prediction_recorder import convlstm_recorder as Recorder
-from program.csi_prediction.model.csi_prediction_model import convlstm as Model
+from program.csi_prediction.dataset.dataset import my_dataset
+from program.csi_prediction.module.choose_module import choose_module
+from program.csi_prediction.recorder.recorder import convlstm_recorder as Recorder
+from program.csi_prediction.model.model_main import main_model as Model
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--config', type=str, default='config/csi_prediction/ConvLSTM_test.yaml')
+    parser.add_argument('--config', type=str, default='config/csi_prediction/train.yaml')
     arg = parser.parse_args()
 
     cfg = config_train()

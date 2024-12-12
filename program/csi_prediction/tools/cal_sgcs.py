@@ -8,16 +8,21 @@ import argparse
 
 def fun_cal_sgcs(y_true, y_pred):
     # (batch_size, channel, subcarrier, transmit_antenna)
-    batch_size, channel, subcarrier, transmit_antenna = y_true.shape
-    W_true_tempo = y_true.permute(0, 2, 3, 1)
-    W_pred_tempo = y_pred.permute(0, 2, 3, 1)
+    # (batch_size, tx)
+    if len(y_true.shape) == 4:
+        batch_size, channel, subcarrier, transmit_antenna = y_true.shape
+        W_true_tempo = y_true.permute(0, 2, 3, 1)
+        W_pred_tempo = y_pred.permute(0, 2, 3, 1)
+        W_true = W_true_tempo.reshape(batch_size, subcarrier, transmit_antenna, 2, 2)
+        W_true = W_true.reshape(batch_size, -1, 2)
 
-    W_true = W_true_tempo.reshape(batch_size, subcarrier, transmit_antenna, 2, 2)
-    W_true = W_true.reshape(batch_size, -1, 2)
+        W_pred = W_pred_tempo.reshape(batch_size, subcarrier, transmit_antenna, 2, 2)
+        W_pred = W_pred.reshape(batch_size, -1, 2)
 
-    W_pred = W_pred_tempo.reshape(batch_size, subcarrier, transmit_antenna, 2, 2)
-    W_pred = W_pred.reshape(batch_size, -1, 2)
-
+    if len(y_true.shape) == 2:
+        batch_size= y_true.shape[0]
+        W_true = y_true.reshape(batch_size, -1, 2)
+        W_pred = y_pred.reshape(batch_size, -1, 2)
     W_true_re, W_true_im = W_true[..., 0], W_true[..., 1]
     W_pre_re, W_pre_im = W_pred[..., 0], W_pred[..., 1]
 

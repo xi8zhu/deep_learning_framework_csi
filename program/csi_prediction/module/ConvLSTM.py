@@ -1,14 +1,14 @@
 import torch.nn as nn
 import torch
-from module_ConvLSTM import ConvLSTM
+from program.csi_prediction.module.Module_ConvLSTM import ConvLSTM
 
 class MyConvLSTM(nn.Module):
     def __init__(self):
         super(MyConvLSTM, self).__init__()
         # B, T, C, H, W
         # CNN part for feature extraction
-        self.conlstm1 = ConvLSTM(4, 64, (3,3), 1, True, True, False)
-        self.conlstm2 = ConvLSTM(64, 128, (5,5), 1, True, True, False)
+        self.convlstm1 = ConvLSTM(4, 64, (3,3), 1, True, True, False)
+        self.convlstm2 = ConvLSTM(64, 128, (5,5), 1, True, True, False)
         self.cnn1 = nn.Conv2d(128,128,3, stride=2, padding=1)
         self.cnn2 = nn.Conv2d(128,64,3, stride=2, padding=1)
         self.cnn3 = nn.Conv2d(64,64,3, stride=1, padding=1)
@@ -18,8 +18,8 @@ class MyConvLSTM(nn.Module):
 
     def forward(self, x):
         batch_size, seq_len, C, H, W = x.size()
-        a,_ = self.conlstm1(x)
-        b,_ = self.conlstm2(a[0])
+        a,_ = self.convlstm1(x)
+        b,_ = self.convlstm2(a[0])
         c = self.cnn1(b[0][:,-1,:,:,:])
         d = self.cnn2(c)
         e = self.cnn3(d)

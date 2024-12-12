@@ -2,7 +2,7 @@ import torch
 from tqdm import tqdm
 from torch import nn
 from program.csi_prediction.tools.cal_sgcs import fun_cal_sgcs
-from program.csi_prediction.dataset.csi_prediction_dataloaderx import my_dataloaderx
+from program.csi_prediction.dataset.dataloaderx import my_dataloaderx
 from program.csi_prediction.tools.data_split_validate import data_split_validate
 from torch.utils.data import random_split
 from thop import profile
@@ -30,6 +30,7 @@ class basemodel():
         test_dataloader = my_dataloaderx(test_dataset, batch_size=cfg.batch_size, shuffle=True)
         return train_dataloader, test_dataloader
 
+class main_model(basemodel):
     def _process_data_for_model(self, inputs, targets, device):
         batch_size_now = inputs.shape[0]
 
@@ -41,14 +42,27 @@ class basemodel():
 
         x = x.to(device = device)
         y = y.to(device = device)
+        # x: (sample, seq, rx * re_im, sb, tx)
+        # y: (sample, rx * re_im, sb, tx)
+        return x, y
+    def _process_data_for_translstm(self, inputs, targets, device):
+        # inputs: (sample, seq, sb, tx, rx, re_im)
+        # targets: (sample, sb, tx, rx, re_im)
+        batch_size_now = inputs.shape[0]
+        inputs = inputs[:,:,0,:,0,:]
+        targets = targets[:,0,:,0,:]
+
+        data_x = inputs.reshape(batch_size_now, 4, 32 * 2)
+        data_y = targets.reshape(batch_size_now, 32 * 2)
+
+        x = data_x.to(device = device)
+        y = data_y.to(device = device)
 
         return x, y
-
-class convlstm(basemodel):
     def train(self, start_epoch=0, epochs=1):
-        self.l2_lambda = self.total_cfg.module.ConvLSTM.l2_lambda
-        self.mse_lambda = self.total_cfg.module.ConvLSTM.mse_lambda
-        self.sgcs_lambda = self.total_cfg.module.ConvLSTM.sgcs_lambda
+        self.l2_lambda = self.total_cfg.module.loss.l2_lambda
+        self.mse_lambda = self.total_cfg.module.loss.mse_lambda
+        self.sgcs_lambda = self.total_cfg.module.loss.sgcs_lambda
         for epoch in range(start_epoch, epochs):
             self.model.train()
             sum_loss = {
@@ -58,7 +72,10 @@ class convlstm(basemodel):
             }
             for idx, (inputs, targets) in tqdm(enumerate(self.dataloader)): 
                 batch_size = inputs.shape[0]
-                x, y = self._process_data_for_model(inputs, targets, self.device)
+                if self.total_cfg.module.model_name == 'TransLSTM':
+                    x, y = self._process_data_for_translstm(inputs, targets, self.device)
+                else:
+                    x, y = self._process_data_for_model(inputs, targets, self.device)
                 y_pred = self.model(x)
 
                 l2_lambda = self.l2_lambda
@@ -126,7 +143,10 @@ class convlstm(basemodel):
             test_length = len(test_dataloader)
             for idx, (inputs, targets) in tqdm(enumerate(test_dataloader)): 
                 batch_size = inputs.shape[0]
-                x, y = self._process_data_for_model(inputs, targets, self.device)
+                if self.total_cfg.module.model_name == 'TransLSTM':
+                    x, y = self._process_data_for_translstm(inputs, targets, self.device)
+                else:
+                    x, y = self._process_data_for_model(inputs, targets, self.device)
                 y_pred = self.model(x)
 
                 fun_mse = nn.MSELoss()
@@ -164,7 +184,10 @@ class convlstm(basemodel):
             infer_time = []
             for device in [self.device, 'cpu']:
                 print(device)
-                input = torch.randn(1, 4, 4, 12, 32)
+                if self.total_cfg.module.model_name == 'TransLSTM':
+                    input = torch.randn(1, 4, 64)
+                else:
+                    input = torch.randn(1, 4, 4, 12, 32)
                 input = input.to(device=device)
                 model = model.to(device=device)
                 Flops, params = profile(model, inputs=(input,)) # macs
@@ -205,6 +228,3 @@ class convlstm(basemodel):
                     'params': " % .4fM"% (params / 1000000)
                 }
             self.recorder.result_log(log)
-class TransLSTM(basemodel):
-    def train(self, start_epoch=0, epochs=1):
-        pass

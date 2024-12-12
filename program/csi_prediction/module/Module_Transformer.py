@@ -1,12 +1,12 @@
 import torch.nn as nn
 import torch
-from module_ConvLSTM import ConvLSTM
+from Module_ConvLSTM import ConvLSTM
 from torch.nn.functional import log_softmax, pad
 import altair as alt
 import copy
 import math
 import pandas as pd
-import numpy as np
+
 class EncoderDecoder(nn.Module):
     """
     A standard Encoder-Decoder architecture. Base for this and many

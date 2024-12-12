@@ -2,7 +2,7 @@
 
 
 
-model_list = ['ConvLSTM', 'transLSTM']
+model_list = ['ConvLSTM', 'TransLSTM']
 def choose_module(cfg):
     """
     input: model name
@@ -13,11 +13,12 @@ def choose_module(cfg):
     if model_name == 'ConvLSTM':
         from ConvLSTM import MyConvLSTM
         return MyConvLSTM()
-
     elif model_name == 'LSTM':
-        import LSTM
+        from LSTM import LSTM
+        return LSTM()
     elif model_name == 'CNN':
-        import CNN
-    elif model_name == 'transLSTM':
-        from transLSTM import mytransLSTM
-        return mytransLSTM()
+        from CNN import CNN
+        return CNN()
+    elif model_name == 'TransLSTM':
+        from TransLSTM import TransLSTM
+        return TransLSTM()

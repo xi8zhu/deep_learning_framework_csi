@@ -14,11 +14,27 @@ dataset:
   dataroot_y: '/data/lzh/Umi_outdoor30_21(5).mat'
 
 module:
-  model_name: 'ConvLSTM'
-  ConvLSTM:
+  loss:
     l2_lambda : 0.0
     mse_lambda : 1.0
     sgcs_lambda : 1.0
+  model_name: 'ConvLSTM'
+  ConvLSTM:
+    convlstm_layer: 2
+    CNN_layer: 3
+    convlstm_input_dim: [4, 64]
+    convlstm_output_dim: [64, 128]
+    convlstm_kernel_size: [3, 5]
+    CNN_input_dim: [128, 128, 64]
+    CNN_output_dim: [128, 64, 64]
+    CNN_kernel_size: [3, 3, 3]
+    CNN_stride: [2, 2, 1]
+  TransLSTM:
+    layers_num: 6
+    d_model: 512
+    d_ff: 2048
+    h: 8
+    dropout: 0.1
 
 recorder:
   name: 'csi_prediction'
