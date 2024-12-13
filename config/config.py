@@ -40,6 +40,7 @@ class config_train(config_base):
         self.cfg.dataset.dataroot = ''                          # root of the dataset
         self.cfg.dataset.dataroot_x = '' 
         self.cfg.dataset.dataroot_y = '' 
+        self.cfg.dataset.data_setting = 0
         
         self.cfg.module = CN()
         self.cfg.module.loss = CN()
@@ -60,11 +61,12 @@ class config_train(config_base):
         self.cfg.module.ConvLSTM.CNN_stride = [2, 2, 1]
 
         self.cfg.module.TransLSTM = CN()
-        self.cfg.module.TransLSTM.layers_num = 6
+        self.cfg.module.TransLSTM.trans_layers_num = 6
         self.cfg.module.TransLSTM.d_model = 512
         self.cfg.module.TransLSTM.d_ff = 2048
         self.cfg.module.TransLSTM.h = 8
         self.cfg.module.TransLSTM.dropout = 0.1
+        self.cfg.module.TransLSTM.lstm_layers_num = 6
 
         self.cfg.recorder = CN()
         self.cfg.recorder.name = ''                             # name of the avatar

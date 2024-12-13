@@ -31,7 +31,7 @@ class basemodel():
         return train_dataloader, test_dataloader
 
 class main_model(basemodel):
-    def _process_data_for_model(self, inputs, targets, device):
+    def _process_data_setting_1(self, inputs, targets, device):
         batch_size_now = inputs.shape[0]
 
         data_x = inputs.reshape(batch_size_now, 4, 12, 32, 4)
@@ -45,7 +45,7 @@ class main_model(basemodel):
         # x: (sample, seq, rx * re_im, sb, tx)
         # y: (sample, rx * re_im, sb, tx)
         return x, y
-    def _process_data_for_translstm(self, inputs, targets, device):
+    def _process_data_setting_0(self, inputs, targets, device):
         # inputs: (sample, seq, sb, tx, rx, re_im)
         # targets: (sample, sb, tx, rx, re_im)
         batch_size_now = inputs.shape[0]
@@ -73,9 +73,9 @@ class main_model(basemodel):
             for idx, (inputs, targets) in tqdm(enumerate(self.dataloader)): 
                 batch_size = inputs.shape[0]
                 if self.total_cfg.module.model_name == 'TransLSTM':
-                    x, y = self._process_data_for_translstm(inputs, targets, self.device)
+                    x, y = self._process_data_setting_0(inputs, targets, self.device)
                 else:
-                    x, y = self._process_data_for_model(inputs, targets, self.device)
+                    x, y = self._process_data_setting_1(inputs, targets, self.device)
                 y_pred = self.model(x)
 
                 l2_lambda = self.l2_lambda
@@ -144,9 +144,9 @@ class main_model(basemodel):
             for idx, (inputs, targets) in tqdm(enumerate(test_dataloader)): 
                 batch_size = inputs.shape[0]
                 if self.total_cfg.module.model_name == 'TransLSTM':
-                    x, y = self._process_data_for_translstm(inputs, targets, self.device)
+                    x, y = self._process_data_setting_0(inputs, targets, self.device)
                 else:
-                    x, y = self._process_data_for_model(inputs, targets, self.device)
+                    x, y = self._process_data_setting_1(inputs, targets, self.device)
                 y_pred = self.model(x)
 
                 fun_mse = nn.MSELoss()

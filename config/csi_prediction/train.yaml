@@ -1,24 +1,24 @@
 gpu_id: 0
 load_csi_prediction_checkpoint: 'checkpoints/Umi_outdoor30/csi_prediction_latest'
 lr_net: 1e-4
-train_epoch: 3
-only_test: True
+train_epoch: 500
+only_test: False
 
 dataset:
   batch_size: 1140
-  total_data: False
+  total_data: True
   data_split_flag: True
   data_split: '8:2:0'
   dataroot: 'dataset'
   dataroot_x: '/data/lzh/Umi_outdoor30_1_6_11_16(5).mat'
   dataroot_y: '/data/lzh/Umi_outdoor30_21(5).mat'
-
+  data_setting: 0
 module:
   loss:
-    l2_lambda : 0.0
+    l2_lambda : 0.001
     mse_lambda : 1.0
     sgcs_lambda : 1.0
-  model_name: 'ConvLSTM'
+  model_name: 'TransLSTM'
   ConvLSTM:
     convlstm_layer: 2
     CNN_layer: 3
@@ -30,17 +30,17 @@ module:
     CNN_kernel_size: [3, 3, 3]
     CNN_stride: [2, 2, 1]
   TransLSTM:
-    layers_num: 6
+    trans_layers_num: 6
     d_model: 512
     d_ff: 2048
     h: 8
     dropout: 0.1
-
+    lstm_layers_num: 6
 recorder:
   name: 'csi_prediction'
   logdir: 'log/csi_prediction'
   checkpoint_path: 'checkpoints'
   result_path: 'results'
-  comment: 'debug'
+  comment: 'TransLSTM_add_l2norm'
   save_total_cfg: True
-  save_freq: 200
+  save_freq: 4000

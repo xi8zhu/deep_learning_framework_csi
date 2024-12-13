@@ -68,7 +68,7 @@ class TransLSTM(nn.Module):
         if not module_opt:
             d_model = 512
         self.transformer = default_transformer(vocab = csi_dim, d_model = d_model)
-        self.lstm = nn.LSTM(input_size=d_model, hidden_size=csi_dim, batch_first = True)
+        self.lstm = nn.LSTM(input_size=d_model, hidden_size=csi_dim, num_layers=6, batch_first = True)
         self.output_time = output_time
         if module_opt:
             pass
