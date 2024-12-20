@@ -1,21 +1,21 @@
 gpu_id: 0
 load_csi_prediction_checkpoint: 'checkpoints/Umi_outdoor30/csi_prediction_latest'
-lr_net: 1e-4
+lr_net: 5e-4
 train_epoch: 500
 only_test: False
 
 dataset:
-  batch_size: 1140
+  batch_size: 2280
   total_data: True
   data_split_flag: True
-  data_split: '8:2:0'
+  data_split: '9:1:0'
   dataroot: 'dataset'
   dataroot_x: '/data/lzh/Umi_outdoor30_1_6_11_16(5).mat'
   dataroot_y: '/data/lzh/Umi_outdoor30_21(5).mat'
   data_setting: 0
 module:
   loss:
-    l2_lambda : 0.001
+    l2_lambda : 0.0
     mse_lambda : 1.0
     sgcs_lambda : 1.0
   model_name: 'TransLSTM'
@@ -41,6 +41,6 @@ recorder:
   logdir: 'log/csi_prediction'
   checkpoint_path: 'checkpoints'
   result_path: 'results'
-  comment: 'TransLSTM_add_l2norm'
+  comment: 'long_epoch'
   save_total_cfg: True
   save_freq: 4000
